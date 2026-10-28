@@ -6,7 +6,8 @@ Debloats this laptop (Windows 11 Home Single Language 25H2, Acer Aspire A324-51)
 
 These must still work after every step. The test suite checks them.
 
-- Microsoft Store (opens and can install), Windows Update, Defender, Edge
+- Microsoft Store (opens and can install), Windows Update, Edge
+- An antivirus is active (currently Avast, which keeps Defender switched off)
 - Network, Bluetooth, printer devices
 - WhatsApp, VS Code, Claude, WSL, Windows Terminal, Notepad, Calculator, Photos, Snipping Tool
 - OneDrive, Phone Link + Cross Device, Teams (new, `MSTeams`), new Outlook
@@ -28,7 +29,7 @@ Anything not on either list is **unsure**: leave it alone unless the user says o
 - Never run Step B or Step C without the user typing "go".
 - Run Win11Debloat only from a pinned release tag, with explicit parameters (no defaults mode). See docs/adr/0001.
 - Never commit `backups/`, `logs/`, `Win11Debloat/`, `*.reg` or `admin-audit.txt`. The repo is public. See docs/adr/0002.
-- System Restore was **off** on C: at audit time. Turning it on needs the user's OK (ticket 04).
+- System Restore was **off** on C: at audit time. The user approved turning it on (2026-10-29); Step A does it before creating the restore point.
 
 ## Commands
 

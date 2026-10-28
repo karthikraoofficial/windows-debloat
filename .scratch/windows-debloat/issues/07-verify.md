@@ -7,5 +7,5 @@
 **Status:** ready-for-agent
 
 - [ ] Invoke-Pester .\tests is green, or each fail explained in verify.md
-- [ ] Defender/Avast open question resolved
+- [x] Defender/Avast open question resolved (keep Avast; Must keep = an antivirus is active)
 - [ ] PRD closed once this ticket ships

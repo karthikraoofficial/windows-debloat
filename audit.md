@@ -83,7 +83,7 @@ Step A of the plan can't make a restore point until System Restore is turned on 
 
 ## Other finding: Defender is off because Avast is active
 
-Security Center lists **Avast Antivirus** (active) and **Windows Defender** (disabled). The WinDefend service is Stopped/Manual and `Get-MpComputerStatus` reports AMRunningMode = Not running. Windows does this automatically when another antivirus registers. It isn't caused by any debloat step, but it conflicts with "Defender is on" in the Must keep list. Open question in the PRD: keep Avast, or uninstall it so Defender comes back.
+Security Center lists **Avast Antivirus** (active) and **Windows Defender** (disabled). The WinDefend service is Stopped/Manual and `Get-MpComputerStatus` reports AMRunningMode = Not running. Windows does this automatically when another antivirus registers. It isn't caused by any debloat step, but it conflicts with "Defender is on" in the Must keep list. **Decision (2026-10-29):** keep Avast. The Must keep item is now "an antivirus is active".
 
 ## Baseline test run (before any change)
 
@@ -92,3 +92,5 @@ Security Center lists **Avast Antivirus** (active) and **Windows Defender** (dis
 - **Failing (expected, Want gone not done yet):** 5 ads/suggestion settings, widgets, Bing in search, Copilot policy, Recall policy, and 14 installed apps (Clipchamp, BingSearch, GetHelp, StartExperiencesApp, Todos, Maps, Mail & Calendar, Power Automate, Dev Home, 4 Xbox packages, Edge Game Assist).
 - **Failing (not expected):** "Defender service is running" — see the Avast finding above.
 - **Passing:** every Must keep app, Windows Update, Bluetooth, Spooler, network, Edge; advertising ID off; telemetry minimal; Copilot app absent; the provisioned-only bloat isn't installed for this user.
+
+**Re-run 2026-10-29** after switching the Defender test to "an antivirus is active": 45 passed, 23 failed (only the expected Want gone items).

@@ -8,6 +8,6 @@
 
 - [ ] Tag recorded in PLAN.md
 - [ ] Step B and Step C are separate commands with explicit parameters only
-- [ ] Step A includes turning on System Restore for C: (off at audit time)
+- [ ] Step A includes turning on System Restore for C: (off at audit time, approved 2026-10-29)
 - [ ] Revert notes cover each step
 - [ ] Nothing is run; user reviews PLAN.md

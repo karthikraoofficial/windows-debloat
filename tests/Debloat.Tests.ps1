@@ -87,7 +87,12 @@ Describe 'Must keep: apps are still installed' {
 }
 
 Describe 'Must keep: system services and devices' {
-    It 'Defender service is running'       { (Get-Service WinDefend).Status | Should Be 'Running' }
+    It 'an antivirus is active' {
+        # productState bits 12-15 = 0x1 means real-time protection is on
+        $on = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct |
+            Where-Object { ($_.productState -band 0xF000) -eq 0x1000 })
+        $on.Count | Should BeGreaterThan 0
+    }
     It 'Windows Update is not disabled'    { (Get-Service wuauserv).StartType | Should Not Be 'Disabled' }
     It 'Bluetooth service is not disabled' { (Get-Service bthserv).StartType | Should Not Be 'Disabled' }
     It 'Print Spooler is running'          { (Get-Service Spooler).Status | Should Be 'Running' }

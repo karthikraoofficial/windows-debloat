@@ -28,7 +28,7 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 9. As the laptop owner, I want Xbox and gaming components removed, so that I don't carry gaming overlays I don't use.
 10. As the laptop owner, I want the Microsoft extras on my Want gone list removed for my account and for new accounts, so that they don't come back with a new user profile.
 11. As the laptop owner, I want OneDrive, Phone Link, Teams, new Outlook and my small tools kept, so that my daily workflow is unchanged.
-12. As the laptop owner, I want the Store, Windows Update, Edge, network, Bluetooth and printing to keep working, so that the machine stays maintainable.
+12. As the laptop owner, I want an active antivirus, the Store, Windows Update, Edge, network, Bluetooth and printing to keep working, so that the machine stays maintainable.
 13. As the laptop owner, I want a restore point, an app list and registry exports before any change, so that I can undo everything.
 14. As the laptop owner, I want the exact commands written down before they run, so that I can review them.
 15. As the laptop owner, I want registry tweaks and app removal to be separate commands, so that a problem in one doesn't block undoing the other.
@@ -45,7 +45,7 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 
 - **Tool:** Win11Debloat, cloned at the latest release tag into a gitignored folder. No defaults mode; explicit parameters only (ADR-0001).
 - **Lists:** the Must keep and Want gone lists live in the project `CLAUDE.md` and drive both the plan and the tests.
-- **Step A** turns on System Restore for C: (it was off at audit time; needs my OK), creates a restore point, saves the Appx list, and exports the registry keys the chosen parameters touch.
+- **Step A** turns on System Restore for C: (it was off at audit time; approved 2026-10-29), creates a restore point, saves the Appx list, and exports the registry keys the chosen parameters touch.
 - **Step B** and **Step C** are separate Win11Debloat runs, each logged to `./logs/`.
 - **Unsure** apps are left alone. Widgets are hidden by a setting, not by removing WebExperience.
 - **Telemetry** is already minimal (DiagTrack disabled, policy at Required), so Step B only needs to keep it that way.
@@ -64,13 +64,14 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 - OEM drivers and Acer utilities
 - Win32 (non-Appx) uninstalls
 - Telemetry beyond what Win11Debloat's chosen parameters do
-- Antivirus choice (see open question)
+- Antivirus choice: Avast stays. _(Updated 2026-10-29)_
 
 ## Further Notes
 
-- **Open question (from the audit):** Avast is the active antivirus, so Windows has turned Defender off. "Defender is on" in Must keep fails today, for a reason unrelated to the debloat. Decide before ticket 07: keep Avast (and change the Must keep item to "an antivirus is active"), or uninstall Avast so Defender comes back.
+- **Antivirus (resolved 2026-10-29):** Avast is the active antivirus, so Windows keeps Defender off. The Must keep item is now "an antivirus is active" instead of "Defender is on". _(Updated 2026-10-29)_
 - Feature updates often bring ads and apps back: re-run ticket 07's suite, then ticket 05/06 with a newer tag and the same PLAN.md.
 
 ## Comments
 
 - 2026-10-28: Tickets 01 (audit) and 02 (verification suite) done in 1d1ec16. Audit confirmed an unmanaged device, System Restore off on C:, and Avast active instead of Defender. Next on the frontier: 03 (PLAN.md).
+- 2026-10-29: Owner approved turning on System Restore for C: in Step A (ticket 04), and chose to keep Avast: Must keep now says "an antivirus is active" and the suite checks Security Center instead of the Defender service. Baseline is now 45 passed / 23 failed (all expected Want gone items).
