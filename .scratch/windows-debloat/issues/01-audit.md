@@ -4,8 +4,12 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] audit.md answers all five audit questions
-- [ ] Admin-only checks run through a read-only script with a UAC prompt
-- [ ] Nothing on the system is changed
+- [x] audit.md answers all five audit questions
+- [x] Admin-only checks run through a read-only script with a UAC prompt
+- [x] Nothing on the system is changed
+
+## Comments
+
+- Closed in 1d1ec16. audit.md written. Not managed (no domain/Entra/MDM). System Restore is OFF on C: (turning it on moved to ticket 04, needs the owner's OK). Extra finding: Avast is the active antivirus, so Defender is off (open question in the PRD).

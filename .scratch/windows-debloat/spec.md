@@ -70,3 +70,7 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 
 - **Open question (from the audit):** Avast is the active antivirus, so Windows has turned Defender off. "Defender is on" in Must keep fails today, for a reason unrelated to the debloat. Decide before ticket 07: keep Avast (and change the Must keep item to "an antivirus is active"), or uninstall Avast so Defender comes back.
 - Feature updates often bring ads and apps back: re-run ticket 07's suite, then ticket 05/06 with a newer tag and the same PLAN.md.
+
+## Comments
+
+- 2026-10-28: Tickets 01 (audit) and 02 (verification suite) done in 1d1ec16. Audit confirmed an unmanaged device, System Restore off on C:, and Avast active instead of Defender. Next on the frontier: 03 (PLAN.md).

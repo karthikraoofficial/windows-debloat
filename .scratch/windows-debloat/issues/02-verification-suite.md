@@ -4,9 +4,13 @@
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] One test per Want gone setting and app
-- [ ] One test per Must keep app, plus Defender, Windows Update, Bluetooth, Spooler, network and Edge
-- [ ] Baseline result recorded in audit.md
-- [ ] Runs without admin
+- [x] One test per Want gone setting and app
+- [x] One test per Must keep app, plus Defender, Windows Update, Bluetooth, Spooler, network and Edge
+- [x] Baseline result recorded in audit.md
+- [x] Runs without admin
+
+## Comments
+
+- Closed in 1d1ec16. tests/Debloat.Tests.ps1 written; baseline 44 passed / 24 failed: 23 expected Want gone fails plus the Defender test (Avast, see PRD open question). Baseline recorded in audit.md.
