@@ -16,9 +16,6 @@
         'DisableGameBarIntegration'
     )
 
-    # Step B: widgets are hidden by policy, not with -DisableWidgets (that uninstalls WebExperience).
-    WidgetsPolicy = @{ Key = 'HKLM\SOFTWARE\Policies\Microsoft\Dsh'; Name = 'AllowNewsAndInterests'; Value = 0 }
-
     # Step C: Want gone apps, removed for all users and from provisioning.
     WantGoneApps = @(
         'Clipchamp.Clipchamp'

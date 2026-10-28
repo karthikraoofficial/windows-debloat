@@ -2,12 +2,12 @@
 
 **Win11Debloat tag: `2026.08.24`** (commit `f431c56`, released 2026-08-24, the latest release). It's cloned into `./Win11Debloat/`, which is gitignored. The scripts below refuse to run if the clone is at any other tag.
 
-Nothing in this plan has been run. Each step waits for you to type **"go"**, and Claude never reboots.
+Each step waits for you to type **"go"**, and Claude never reboots. **Run so far:** Step A and Step B on 2026-10-29. In Step B the widgets policy write was blocked (see *Widgets* below), so you switch widgets off in Settings instead.
 
 | Step | What | One UAC prompt runs | Changes the system? |
 |---|---|---|---|
 | A | Turn on System Restore for C:, restore point, app lists, registry exports | [scripts/step-a-backups.ps1](scripts/step-a-backups.ps1) | Turns System Restore on (approved 2026-10-29) |
-| B | Ads, tips, Bing, Copilot/Recall policy, Game Bar, widgets | [scripts/step-b-tweaks.ps1](scripts/step-b-tweaks.ps1) | Registry and policy only, plus removes `Microsoft.BingSearch` (see B notes) |
+| B | Ads, tips, Bing, Copilot/Recall policy, Game Bar (widgets: by hand in Settings) | [scripts/step-b-tweaks.ps1](scripts/step-b-tweaks.ps1) | Registry and policy only, plus removes `Microsoft.BingSearch` (see B notes) |
 | C | Remove 23 Want gone apps for all users and from provisioning | [scripts/step-c-remove-apps.ps1](scripts/step-c-remove-apps.ps1) | Uninstalls apps |
 
 The inputs for all three steps (pinned tag, Step B switches, app lists, registry keys) live in one file: [scripts/debloat-lists.psd1](scripts/debloat-lists.psd1). The two test files read the same file. [tests/Plan.Tests.ps1](tests/Plan.Tests.ps1) checks the following:
@@ -64,11 +64,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Win11Debloat\Win11Debl
   -DisableCopilot -DisableRecall -DisableDVR -DisableGameBarIntegration
 ```
 
-Then one value outside Win11Debloat, to hide widgets:
-
-```powershell
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f
-```
+Then switch widgets off by hand: **Settings > Personalization > Taskbar > Widgets: Off**. This sets `TaskbarDa = 0`. Scripts can't do it (see *Widgets* below).
 
 | Switch | What it sets | Want gone item | Test it turns green |
 |---|---|---|---|
@@ -80,11 +76,11 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_D
 | `-DisableRecall` | Policy `WindowsAI\DisableAIDataAnalysis` = 1 (HKCU + HKLM), `AllowRecallEnablement` = 0, `TurnOffSavingSnapshots` = 1 | Recall blocked by policy | Recall policy |
 | `-DisableDVR` | `GameDVR_Enabled`, `AppCaptureEnabled` = 0; policy `AllowGameDVR` = 0 | Game Bar overlays (game/screen recording) | — |
 | `-DisableGameBarIntegration` | `UseNexusForGameBarEnabled` = 0; points `ms-gamebar:` / `ms-gamebarservices:` links at `systray.exe`, so removing Game Bar in Step C doesn't cause "you need an app to open this" pop-ups | Game Bar overlays | — |
-| *(reg add)* `Dsh\AllowNewsAndInterests` = 0 | Turns the widgets board off (taskbar and lock screen) without uninstalling anything | Widgets on the taskbar | Widgets |
+| *(by hand in Settings)* `TaskbarDa` = 0 | Hides the widgets button on the taskbar without uninstalling anything | Widgets on the taskbar | Widgets |
 
 Win11Debloat first saves its own JSON backup of every value it will change (we don't pass `-SkipRegistryBackup`), and the wrapper copies that file into `backups\`. We don't pass `-CreateRestorePoint`, because Step A already made one.
 
-**Why widgets aren't done with `-DisableWidgets`:** at this tag, that switch sets no registry value. It *uninstalls* `MicrosoftWindows.Client.WebExperience`, `Microsoft.WidgetsPlatformRuntime` and `Microsoft.StartExperiencesApp` (Scripts/Features/Invoke-Changes.ps1). The audit put WebExperience in **Unsure** because it also serves other shell parts, so we hide widgets with the policy instead. `HKCU\…\TaskbarDa` would also work, but recent builds block scripts from writing it (UCPD driver); the policy is reliable, and the test accepts either.
+**Widgets.** `-DisableWidgets` isn't used: at this tag it sets no registry value. It *uninstalls* `MicrosoftWindows.Client.WebExperience`, `Microsoft.WidgetsPlatformRuntime` and `Microsoft.StartExperiencesApp` (Scripts/Features/Invoke-Changes.ps1). The audit put WebExperience in **Unsure** because it also serves other shell parts. The plan was to set the policy `HKLM\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInterests = 0` instead. On 2026-10-29 that write was refused with "Access is denied" from an elevated `reg.exe` and from `New-ItemProperty`, even though Administrators have full control of the key. The UCPD driver is running and is the likely cause; it also blocks `TaskbarDa`. So the owner switches widgets off in Settings, which Windows allows, and the test accepts either value. The failed attempt left an empty `Dsh` key, which is harmless. It's in Step A's `absent-keys.txt`, so the revert deletes it. A feature update can switch the toggle back on; Step 4 catches that.
 
 Reboot or sign out after Step B so Start, the taskbar and the policies refresh. Claude will tell you; it won't do it.
 
@@ -166,7 +162,7 @@ Nothing to undo. Leave System Restore on at least until Step 4 (verify) passes. 
    | DisableGameBarIntegration | `…\Undo\Enable_Game_Bar_Integration.reg` |
 
    Run with `reg import "<path>"`, or use Win11Debloat's GUI (run it without parameters → *Restore backup*), which reads the JSON backup in `Win11Debloat\Backups\` (a copy is in `backups\`).
-3. **Widgets:** `reg delete "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /f`
+3. **Widgets:** switch Settings > Personalization > Taskbar > Widgets back on. The empty `Dsh` key goes with the `absent-keys.txt` deletes in step 1.
 
 ### Step C
 
@@ -265,7 +261,7 @@ Decision key: **B** = Step B, **C** = Step C, **skip** = not used (reason given)
 
 | Parameter | What it does | Decision |
 |---|---|---|
-| `-DisableWidgets` | **Uninstalls** WebExperience, WidgetsPlatformRuntime, StartExperiencesApp | skip: WebExperience is Unsure; the widgets policy is used instead (B) |
+| `-DisableWidgets` | **Uninstalls** WebExperience, WidgetsPlatformRuntime, StartExperiencesApp | skip: WebExperience is Unsure; widgets are switched off in Settings instead (B) |
 | `-HideChat` | Hide Chat icon (Windows 10/early 11 only) | skip: n/a on 25H2 |
 | `-TaskbarAlignLeft` | Left-align taskbar | skip: preference |
 | `-HideSearchTb` / `-ShowSearchIconTb` / `-ShowSearchLabelTb` / `-ShowSearchBoxTb` | Search button style | skip: preference |
@@ -294,7 +290,7 @@ Decision key: **B** = Step B, **C** = Step C, **skip** = not used (reason given)
 ## Recommended skips, in short
 
 - **Defaults mode:** it would remove Sticky Notes, Alarms, Sound Recorder, Quick Assist and new Teams.
-- **`-DisableWidgets`:** it uninstalls WebExperience (Unsure). The widgets policy does the job.
+- **`-DisableWidgets`:** it uninstalls WebExperience (Unsure). The Settings toggle does the job.
 - **`-DisableStoreSearchSuggestions`:** it locks a Store database file; the Store is Must keep.
 - **`-DisableTelemetry`:** already minimal.
 - **`-DisableNotifications`:** it kills every app's notifications.

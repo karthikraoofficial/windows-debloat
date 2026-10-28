@@ -1,5 +1,5 @@
-# Step B (PLAN.md): registry and privacy tweaks. Runs the pinned Win11Debloat with explicit switches,
-# then sets the widgets policy. Never reboots. Needs admin (run via UAC).
+# Step B (PLAN.md): registry and privacy tweaks. Runs the pinned Win11Debloat with explicit switches.
+# Widgets are switched off by hand in Settings. Never reboots. Needs admin (run via UAC).
 $ErrorActionPreference = 'Stop'
 
 $repo  = Split-Path $PSScriptRoot -Parent
@@ -24,10 +24,8 @@ try {
     $exit = & { $ErrorActionPreference = 'Continue'; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $w11 'Win11Debloat.ps1') -Silent -LogPath $logs @switches | Out-Host; $LASTEXITCODE }
     Write-Host "  Win11Debloat exit code: $exit"
 
-    $p = $lists.WidgetsPolicy
-    Write-Host "> Hiding widgets by policy: $($p.Key)\$($p.Name) = $($p.Value)"
-    $ok = & { $ErrorActionPreference = 'Continue'; & reg.exe add $p.Key /v $p.Name /t REG_DWORD /d $p.Value /f *> $null; $LASTEXITCODE -eq 0 }
-    if (-not $ok) { throw 'Setting the widgets policy failed.' }
+    # Widgets can't be hidden from a script: the UCPD driver blocks both the Dsh policy and TaskbarDa (docs/adr/0003).
+    Write-Host '> Widgets: switch off Settings > Personalization > Taskbar > Widgets by hand.'
 
     $backup = Get-ChildItem (Join-Path $w11 'Backups') -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime | Select-Object -Last 1
     if ($backup) {

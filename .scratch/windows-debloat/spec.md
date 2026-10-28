@@ -47,7 +47,7 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 - **Lists:** the Must keep and Want gone lists live in the project `CLAUDE.md` and drive both the plan and the tests.
 - **Step A** turns on System Restore for C: (it was off at audit time; approved 2026-10-29), creates a restore point, saves the Appx list, and exports the registry keys the chosen parameters touch.
 - **Step B** and **Step C** are separate Win11Debloat runs, each logged to `./logs/`.
-- **Unsure** apps are left alone. Widgets are hidden by a setting, not by removing WebExperience: the `Dsh\AllowNewsAndInterests` policy, because Win11Debloat's `-DisableWidgets` uninstalls WebExperience (ADR-0003). _(Updated: #03)_
+- **Unsure** apps are left alone. Widgets are hidden by a setting, not by removing WebExperience, because Win11Debloat's `-DisableWidgets` uninstalls WebExperience (ADR-0003). The owner switches widgets off in Settings, because scripts are blocked from writing the `Dsh\AllowNewsAndInterests` policy. _(Updated: #03, #05)_
 - **Step scripts:** each of Step A/B/C is one script in `scripts/` run behind one UAC prompt. Their inputs (pinned tag `2026.08.24`, Step B switches, app lists, backup keys) live in `scripts/debloat-lists.psd1`, which the tests read too. _(Added: #03)_
 - **Extra removal:** `Microsoft.Edge.GameAssist` isn't in Win11Debloat's catalog, so Step C removes it directly (ADR-0003). _(Added: #03)_
 - **Telemetry** is already minimal (DiagTrack disabled, policy at Required), so Step B only needs to keep it that way.
@@ -79,3 +79,4 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 - 2026-10-28: Tickets 01 (audit) and 02 (verification suite) done in 1d1ec16. Audit confirmed an unmanaged device, System Restore off on C:, and Avast active instead of Defender. Next on the frontier: 03 (PLAN.md).
 - 2026-10-29: Owner approved turning on System Restore for C: in Step A (ticket 04), and chose to keep Avast: Must keep now says "an antivirus is active" and the suite checks Security Center instead of the Defender service. Baseline is now 45 passed / 23 failed (all expected Want gone items).
 - 2026-10-29: Ticket 03 done. PLAN.md approved against Win11Debloat `2026.08.24`. Scope changes: widgets hidden by policy and Edge Game Assist removed directly, both outside Win11Debloat (ADR-0003); step scripts and a shared lists file added; new `tests/Plan.Tests.ps1`. Next on the frontier: 04 (Step A).
+- 2026-10-29: Tickets 04 (Step A) and 05 (Step B) done. Restore point #1 and backups made. Scope change in 05: scripts are blocked from writing the widgets policy (likely UCPD), so the owner switches widgets off in Settings (ADR-0003 amended). Next on the frontier: 06 (Step C).

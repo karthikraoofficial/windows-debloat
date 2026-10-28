@@ -29,7 +29,7 @@ Anything not on either list is **unsure**: leave it alone unless the user says o
 - Never run Step B or Step C without the user typing "go".
 - Run Win11Debloat only from a pinned release tag, with explicit parameters (no defaults mode). See docs/adr/0001.
 - The plan's inputs (tag, Step B switches, app lists, backup keys) live in `scripts/debloat-lists.psd1`. Change them there and in PLAN.md together; `tests/Plan.Tests.ps1` must stay green.
-- Widgets are hidden by policy and Edge Game Assist is removed directly, not by Win11Debloat. See docs/adr/0003.
+- Widgets are switched off by hand in Settings (scripts are blocked from writing the widgets policy and `TaskbarDa`), and Edge Game Assist is removed directly, not by Win11Debloat. See docs/adr/0003.
 - Never commit `backups/`, `logs/`, `Win11Debloat/`, `*.reg` or `admin-audit.txt`. The repo is public. See docs/adr/0002.
 - System Restore was **off** on C: at audit time. The user approved turning it on (2026-10-29); Step A does it before creating the restore point.
 
