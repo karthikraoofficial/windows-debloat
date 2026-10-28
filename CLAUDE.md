@@ -33,6 +33,8 @@ Anything not on either list is **unsure**: leave it alone unless the user says o
 
 ## Commands
 
+- Workflow: `/step1-audit`, `/step2-plan`, `/step3-execute`, `/step4-verify` (prompts in `.claude/commands/`; `/clear` between steps)
+
 - Admin read-only audit (UAC prompt): `Start-Process powershell -Verb RunAs -Wait -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "<repo>\scripts\audit-admin.ps1" -OutFile "<repo>\admin-audit.txt"'`
 - Tests (Pester 3.4, Windows PowerShell 5.1): `Invoke-Pester .\tests`
 

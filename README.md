@@ -6,14 +6,16 @@ What stays and what goes is listed in [CLAUDE.md](CLAUDE.md) (Must keep / Want g
 
 ## The flow
 
-Each step runs in a fresh Claude Code session (`/clear` in between).
+Each step is a slash command in Claude Code (saved in [.claude/commands/](.claude/commands/)). Run `/clear`, then type the command. Nothing to paste.
 
-1. **Audit** (read-only) → [audit.md](audit.md)
-2. **Plan**: clone Win11Debloat at the latest release tag and write `PLAN.md` (backups, tweaks command, app list, revert notes). Review it yourself.
-3. **Execute** `PLAN.md`: Step A backups → "go" → Step B tweaks → "go" → Step C app removal. Logs go to `./logs/`. Claude never reboots.
-4. **Verify** after you reboot → `verify.md`.
+| Type | What it does | You then |
+|---|---|---|
+| `/step1-audit` | Read-only audit → [audit.md](audit.md) (done) | — |
+| `/step2-plan` | Clones Win11Debloat at the latest tag, writes `PLAN.md` | Read PLAN.md, edit if needed, say OK |
+| `/step3-execute` | Backups → waits for "go" → tweaks → waits for "go" → app removal. Logs to `./logs/` | Type "go" twice, click Yes on UAC, then reboot yourself |
+| `/step4-verify` | Runs the tests and manual checks → `verify.md` | Read verify.md |
 
-After a big Windows feature update, run step 4 again. If things came back, pull the latest Win11Debloat tag and re-run step 3 with the same `PLAN.md`.
+Claude never reboots. After a big Windows feature update, run `/step4-verify` again. If things came back, it tells you what to re-run.
 
 Work is tracked as a PRD and tickets under [.scratch/windows-debloat/](.scratch/windows-debloat/), with a [kanban board](.scratch/windows-debloat/BOARD.md).
 
