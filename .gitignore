@@ -1,0 +1,7 @@
+# Public repo: keep machine-specific artifacts local (see docs/adr/0002)
+Win11Debloat/
+backups/
+logs/
+*.reg
+admin-audit.txt
+TestResults*.xml
