@@ -13,3 +13,4 @@
 ## Comments
 
 - Closed 2026-10-29. Verified at e13900f after the owner rebooted (boot 00:52, build 26200.9711, so not a feature-update re-check). `Invoke-Pester .\tests`: 137/137 pass. Manual checks all pass: Store opens (installs checked indirectly through post-reboot Store/AppX updates), Windows Update search succeeds, Avast active, Edge launches, Wi-Fi up, Bluetooth adapter OK, Spooler running. OneDrive is installed but its autostart was switched off by the owner in 2024, before this project. Results in `verify.md`. Nothing changed.
+- 2026-10-29: Re-check after the 26H2 feature update (build 26300): suite 137/137, nothing came back, no new apps, so Step B/C don't need a re-run. Before it installed, the 26H2 download kept failing (`0xC190040F`); with the owner's OK the Windows Update download cache was reset (renamed, not deleted). It's unclear whether the debloat or the reset played a part. Written up in `verify.md`.

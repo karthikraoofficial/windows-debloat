@@ -45,6 +45,26 @@ None.
 
 Optional, not a fail: if you want OneDrive to sync, turn its autostart back on (Task Manager > Startup apps > OneDrive > Enable) and sign in. That was your own earlier choice, so it was left alone.
 
+## Re-check after the 26H2 feature update — 2026-10-29
+
+**Windows 11 26H2** (build 26300.9711) installed at about 01:39 on 2026-10-29, after the verify above. **Nothing came back, and no re-run of Step B/C is needed.**
+
+- `Invoke-Pester .\tests` → **137 passed, 0 failed**.
+- **Want gone:** all still off. `TaskbarDa`, `Start_IrisRecommendations`, `ShowCopilotButton` and the lock-screen/suggestion values are 0; the Copilot, Recall, Game DVR and Settings-ads policies are still set; `ms-gamebar:` still points at `systray.exe`.
+- **New apps:** none. Every installed package was already on the machine before the debloat (compared with Step A's `appx-allusers.csv`). None of the 23 removed apps came back for this user.
+- **Must keep:** Avast active; Windows Update search OK (2 optional drivers); Edge and the Store open; `winget --source msstore` resolves; Wi-Fi up; Bluetooth adapter OK; Spooler running; no AppX deployment errors since the boot. Phone Link wasn't running yet two minutes after boot. It's still installed and starts on demand.
+
+### Getting 26H2 to download (Windows Update issue)
+
+Before it installed, 26H2 stuck at "Downloading 0%" / "Pending download", and the Windows Update page in Settings showed "Something went wrong". The update log showed each attempt failing while Windows worked out which pieces of the upgrade to download, with `0xC190040F`, and the orchestrator then cancelling with `0x8024A10A`.
+
+- 26H2 had been offered since Oct 21, but its first download attempt was after the debloat, so there's no pre-debloat attempt to compare. Whether the debloat played a part is **unknown**.
+- Being on battery wasn't the cause: it also failed on mains power.
+- Fix tried, with the owner's OK: stopped `wuauserv` and BITS, renamed `C:\Windows\SoftwareDistribution\Download` to `Download.bak-20261029-011929`, and started both services again (log: `logs/wu-reset-20261029-011929.log`). It still failed straight after. 26H2 downloaded and installed some minutes later, so it's unclear whether the reset helped.
+- Tidy-up: `Download.bak-20261029-011929` (about 2.3 GB) can be deleted.
+
+If a future feature update sticks the same way, try the Windows 11 Installation Assistant before resetting anything.
+
 ## After a feature update
 
 Run `/step4-verify` again. If anything on Want gone came back, pull the latest Win11Debloat tag, re-run `/step2-plan` to check the parameters still match, then re-run `/step3-execute` with the same PLAN.md.

@@ -82,3 +82,4 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 - 2026-10-29: Tickets 04 (Step A) and 05 (Step B) done. Restore point #1 and backups made. Scope change in 05: scripts are blocked from writing the widgets policy (likely UCPD), so the owner switches widgets off in Settings (ADR-0003 amended). Next on the frontier: 06 (Step C).
 - 2026-10-29: Ticket 06 (Step C) done: all 23 Want gone apps removed, full suite 137/137. Next on the frontier: 07 (verify, after the owner reboots). The PRD stays open until 07 ships.
 - 2026-10-29: Ticket 07 (verify) done: after the reboot the suite is 137/137 and every manual Must keep check passes (`verify.md`). All seven tickets have shipped, so this PRD is closed. After a feature update, re-run `/step4-verify`.
+- 2026-10-29: 26H2 installed the same night; the re-check passed with nothing back (user story 21 exercised). See ticket 07 and `verify.md`.

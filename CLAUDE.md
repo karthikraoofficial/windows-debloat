@@ -1,6 +1,6 @@
 # Windows Debloat
 
-Debloats this laptop (Windows 11 Home Single Language 25H2, Acer Aspire A324-51) with [Win11Debloat](https://github.com/Raphire/Win11Debloat) in four steps: Audit → Plan → Execute → Verify. See README.md for the flow and CONTEXT.md for terms.
+Debloats this laptop (Windows 11 Home Single Language 26H2 since 2026-10-29; audited and debloated on 25H2; Acer Aspire A324-51) with [Win11Debloat](https://github.com/Raphire/Win11Debloat) in four steps: Audit → Plan → Execute → Verify. See README.md for the flow and CONTEXT.md for terms.
 
 ## Must keep
 
