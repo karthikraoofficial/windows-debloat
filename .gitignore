@@ -5,3 +5,6 @@ logs/
 *.reg
 admin-audit.txt
 TestResults*.xml
+
+# Local editor/agent tool state (Serena code tool), not part of the project
+.serena/
