@@ -47,7 +47,9 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 - **Lists:** the Must keep and Want gone lists live in the project `CLAUDE.md` and drive both the plan and the tests.
 - **Step A** turns on System Restore for C: (it was off at audit time; approved 2026-10-29), creates a restore point, saves the Appx list, and exports the registry keys the chosen parameters touch.
 - **Step B** and **Step C** are separate Win11Debloat runs, each logged to `./logs/`.
-- **Unsure** apps are left alone. Widgets are hidden by a setting, not by removing WebExperience.
+- **Unsure** apps are left alone. Widgets are hidden by a setting, not by removing WebExperience: the `Dsh\AllowNewsAndInterests` policy, because Win11Debloat's `-DisableWidgets` uninstalls WebExperience (ADR-0003). _(Updated: #03)_
+- **Step scripts:** each of Step A/B/C is one script in `scripts/` run behind one UAC prompt. Their inputs (pinned tag `2026.08.24`, Step B switches, app lists, backup keys) live in `scripts/debloat-lists.psd1`, which the tests read too. _(Added: #03)_
+- **Extra removal:** `Microsoft.Edge.GameAssist` isn't in Win11Debloat's catalog, so Step C removes it directly (ADR-0003). _(Added: #03)_
 - **Telemetry** is already minimal (DiagTrack disabled, policy at Required), so Step B only needs to keep it that way.
 - **Repo:** public on GitHub; `backups/`, `logs/`, `Win11Debloat/`, `*.reg` and `admin-audit.txt` are gitignored (ADR-0002).
 
@@ -57,6 +59,7 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 - Written before any change (ticket 02): Want gone tests start red, Must keep tests start green. The verify step (ticket 07) turns the whole suite green.
 - Things the suite can't check (Store can install, Windows Update finds updates, Edge launches) are checked by hand in `verify.md`.
 - No prior art: this is the repo's first test suite.
+- A second file, `tests/Plan.Tests.ps1`, guards the plan's inputs rather than the machine: Step B switches exist in the pinned tag, no defaults mode, and no Step C wildcard can match a Must keep app. It's always green. _(Added: #03)_
 
 ## Out of Scope
 
@@ -75,3 +78,4 @@ Use Win11Debloat, pinned to a release tag, in four steps, each in a fresh Claude
 
 - 2026-10-28: Tickets 01 (audit) and 02 (verification suite) done in 1d1ec16. Audit confirmed an unmanaged device, System Restore off on C:, and Avast active instead of Defender. Next on the frontier: 03 (PLAN.md).
 - 2026-10-29: Owner approved turning on System Restore for C: in Step A (ticket 04), and chose to keep Avast: Must keep now says "an antivirus is active" and the suite checks Security Center instead of the Defender service. Baseline is now 45 passed / 23 failed (all expected Want gone items).
+- 2026-10-29: Ticket 03 done. PLAN.md approved against Win11Debloat `2026.08.24`. Scope changes: widgets hidden by policy and Edge Game Assist removed directly, both outside Win11Debloat (ADR-0003); step scripts and a shared lists file added; new `tests/Plan.Tests.ps1`. Next on the frontier: 04 (Step A).

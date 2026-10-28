@@ -8,7 +8,7 @@ Read CLAUDE.md and PLAN.md. Execute PLAN.md one step at a time:
 2. Step B (tweaks). Run the exact command from PLAN.md, log output to ./logs/. Report results, then wait for "go".
 3. Step C (app removal). Run it, log output, report anything that failed.
 
-Each step needs admin: run it through a UAC prompt as PLAN.md describes.
+Each step needs admin: run its script (`scripts/step-a-backups.ps1`, `step-b-tweaks.ps1`, `step-c-remove-apps.ps1`) through a UAC prompt as PLAN.md describes. Run `Invoke-Pester .\tests\Plan.Tests.ps1` first; stop if it isn't green.
 
 After all steps, tell me whether a reboot is needed. Do not reboot.
 

@@ -12,3 +12,4 @@
 ## Comments
 
 - 2026-10-29: Owner approved turning on System Restore for C:. Still runs inside Step A, after PLAN.md is reviewed.
+- 2026-10-29: PLAN.md approved (ticket 03). Runs `scripts/step-a-backups.ps1`; backups go to `backups/<time>/`, log to `logs/stepA-<time>.log`.

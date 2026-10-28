@@ -10,6 +10,8 @@ function Test-AppInstalled([string]$Name) {
     [bool](Get-AppxPackage -Name $Name -ErrorAction SilentlyContinue)
 }
 
+$lists = Import-PowerShellDataFile (Join-Path (Split-Path $PSScriptRoot -Parent) 'scripts\debloat-lists.psd1')
+
 $cdm = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'
 $adv = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
 
@@ -57,31 +59,13 @@ Describe 'Want gone: telemetry stays minimal' {
 }
 
 Describe 'Want gone: apps are removed' {
-    $wantGone = @(
-        'Clipchamp.Clipchamp', 'Microsoft.BingSearch', 'Microsoft.BingNews', 'Microsoft.BingWeather',
-        'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.StartExperiencesApp', 'Microsoft.Todos',
-        'Microsoft.WindowsMaps', 'microsoft.windowscommunicationsapps', 'Microsoft.PowerAutomateDesktop',
-        'Microsoft.Windows.DevHome', 'Microsoft.MicrosoftSolitaireCollection', 'Microsoft.People',
-        'Microsoft.MicrosoftOfficeHub', 'MicrosoftTeams',
-        'Microsoft.XboxGameOverlay', 'Microsoft.XboxGamingOverlay', 'Microsoft.XboxSpeechToTextOverlay',
-        'Microsoft.XboxIdentityProvider', 'Microsoft.Xbox.TCUI', 'Microsoft.GamingApp', 'Microsoft.Edge.GameAssist'
-    )
-    foreach ($app in $wantGone) {
+    foreach ($app in $lists.WantGoneApps) {
         It "$app is not installed" { Test-AppInstalled $app | Should Be $false }
     }
 }
 
 Describe 'Must keep: apps are still installed' {
-    $mustKeep = @(
-        'Microsoft.WindowsStore', 'Microsoft.StorePurchaseApp', 'Microsoft.DesktopAppInstaller', 'Microsoft.SecHealthUI',
-        'Microsoft.MicrosoftEdge.Stable', '5319275A.WhatsAppDesktop', 'Microsoft.VisualStudioCode', 'Claude',
-        'MicrosoftCorporationII.WindowsSubsystemForLinux', 'Microsoft.WindowsTerminal', 'Microsoft.WindowsNotepad',
-        'Microsoft.WindowsCalculator', 'Microsoft.Windows.Photos', 'Microsoft.ScreenSketch', 'Microsoft.Paint',
-        'Microsoft.WindowsAlarms', 'Microsoft.OneDriveSync', 'Microsoft.YourPhone', 'MicrosoftWindows.CrossDevice',
-        'MSTeams', 'Microsoft.OutlookForWindows', 'Microsoft.MicrosoftStickyNotes', 'Microsoft.ZuneMusic',
-        'Microsoft.WindowsSoundRecorder', 'Microsoft.WindowsCamera', 'MicrosoftCorporationII.QuickAssist'
-    )
-    foreach ($app in $mustKeep) {
+    foreach ($app in $lists.MustKeepApps) {
         It "$app is installed" { Test-AppInstalled $app | Should Be $true }
     }
 }

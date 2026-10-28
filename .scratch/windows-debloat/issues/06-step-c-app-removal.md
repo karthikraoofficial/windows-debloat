@@ -10,3 +10,7 @@
 - [ ] Log saved in ./logs/
 - [ ] Failures listed
 - [ ] User told whether a reboot is needed; no reboot
+
+## Comments
+
+- 2026-10-29: PLAN.md approved (ticket 03). Runs `scripts/step-c-remove-apps.ps1`: 22 apps through Win11Debloat plus Microsoft.Edge.GameAssist removed directly (ADR-0003); stops before removing if any pattern matches a Must keep app.
