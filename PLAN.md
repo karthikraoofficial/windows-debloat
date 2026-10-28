@@ -2,7 +2,7 @@
 
 **Win11Debloat tag: `2026.08.24`** (commit `f431c56`, released 2026-08-24, the latest release). It's cloned into `./Win11Debloat/`, which is gitignored. The scripts below refuse to run if the clone is at any other tag.
 
-Each step waits for you to type **"go"**, and Claude never reboots. **Run so far:** Step A and Step B on 2026-10-29. In Step B the widgets policy write was blocked (see *Widgets* below), so you switch widgets off in Settings instead.
+Each step waits for you to type **"go"**, and Claude never reboots. **Run so far:** Steps A, B and C on 2026-10-29 (all 23 apps removed, suite 137/137). Next: reboot, then Step 4 (verify). In Step B the widgets policy write was blocked (see *Widgets* below), so you switch widgets off in Settings instead.
 
 | Step | What | One UAC prompt runs | Changes the system? |
 |---|---|---|---|
